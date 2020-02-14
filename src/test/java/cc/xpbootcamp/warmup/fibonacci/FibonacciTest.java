@@ -15,4 +15,13 @@ class FibonacciTest {
         assertEquals(result, 1);
     }
 
+    @Test
+    void should_return_1_when_calculate_given_position_is_2() {
+        Fibonacci fibonacci = new Fibonacci();
+
+        int result = fibonacci.getValueAt(2);
+
+        assertEquals(result, 1);
+    }
+
 }
