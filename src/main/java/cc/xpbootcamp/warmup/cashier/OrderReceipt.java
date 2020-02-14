@@ -11,10 +11,12 @@ import java.util.List;
  */
 public class OrderReceipt {
     private Order order;
-    private static final String ORDER_HEADER = "======Printing Orders======\n";
 
-    double totalSalesTax = 0d;
-    double totalPrice = 0d;
+    private static final String ORDER_HEADER = "======Printing Orders======\n";
+    private static final double TAX = .10;
+
+    private double totalSalesTax = 0d;
+    private double totalPrice = 0d;
 
     public OrderReceipt(Order order) {
         this.order = order;
@@ -33,19 +35,15 @@ public class OrderReceipt {
         StringBuilder output = new StringBuilder();
 
         for (LineItem lineItem : LineItems) {
-            output.append(lineItem.getDescription());
-            output.append('\t');
-            output.append(lineItem.getPrice());
-            output.append('\t');
-            output.append(lineItem.getQuantity());
-            output.append('\t');
-            output.append(lineItem.totalAmount());
-            output.append('\n');
+            output.append(lineItem.getDescription()).append('\t');
+            output.append(lineItem.getPrice()).append('\t');
+            output.append(lineItem.getQuantity()).append('\t');
+            output.append(lineItem.getTotalAmount()).append('\n');
 
-            double salesTax = lineItem.totalAmount() * .10;
+            double salesTax = lineItem.getTotalAmount() * TAX;
             totalSalesTax += salesTax;
 
-            totalPrice += lineItem.totalAmount() + salesTax;
+            totalPrice += lineItem.getTotalAmount() + salesTax;
         }
         return output.toString();
     }
