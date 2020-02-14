@@ -24,4 +24,13 @@ class FibonacciTest {
         assertEquals(result, 1);
     }
 
+    @Test
+    void should_return_2_when_calculate_given_position_is_3() {
+        Fibonacci fibonacci = new Fibonacci();
+
+        int result = fibonacci.getValueAt(3);
+
+        assertEquals(result, 2);
+    }
+
 }
