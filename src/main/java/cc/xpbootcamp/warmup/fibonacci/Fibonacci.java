@@ -2,7 +2,7 @@ package cc.xpbootcamp.warmup.fibonacci;
 
 public class Fibonacci {
 
-    public int getValueAt(int position) {
+    public long getValueAt(int position) {
         if (position == 1)
             return 1;
         if (position == 2)

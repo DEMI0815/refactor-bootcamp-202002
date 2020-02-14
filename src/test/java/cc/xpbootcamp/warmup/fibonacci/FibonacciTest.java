@@ -10,7 +10,7 @@ class FibonacciTest {
     void should_return_1_when_calculate_given_position_is_1() {
         Fibonacci fibonacci = new Fibonacci();
 
-        int result = fibonacci.getValueAt(1);
+        long result = fibonacci.getValueAt(1);
 
         assertEquals(result, 1);
     }
@@ -19,7 +19,7 @@ class FibonacciTest {
     void should_return_1_when_calculate_given_position_is_2() {
         Fibonacci fibonacci = new Fibonacci();
 
-        int result = fibonacci.getValueAt(2);
+        long result = fibonacci.getValueAt(2);
 
         assertEquals(result, 1);
     }
@@ -28,7 +28,7 @@ class FibonacciTest {
     void should_return_2_when_calculate_given_position_is_3() {
         Fibonacci fibonacci = new Fibonacci();
 
-        int result = fibonacci.getValueAt(3);
+        long result = fibonacci.getValueAt(3);
 
         assertEquals(result, 2);
     }
@@ -37,9 +37,18 @@ class FibonacciTest {
     void should_return_3_when_calculate_given_position_is_4() {
         Fibonacci fibonacci = new Fibonacci();
 
-        int result = fibonacci.getValueAt(4);
+        long result = fibonacci.getValueAt(4);
 
         assertEquals(result, 3);
+    }
+
+    @Test
+    void should_return_3_when_calculate_given_position_is_50() {
+        Fibonacci fibonacci = new Fibonacci();
+
+        long result = fibonacci.getValueAt(50);
+
+        assertEquals(result, 12586269025L);
     }
 
 }
