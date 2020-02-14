@@ -1,5 +1,7 @@
 package cc.xpbootcamp.warmup.cashier;
 
+import java.util.List;
+
 /**
  * OrderReceipt prints the details of order including customer name, address, description, quantity,
  * price and amount. It also calculates the sales tax @ 10% and prints as part
@@ -11,21 +13,26 @@ public class OrderReceipt {
     private Order order;
     private static final String ORDER_HEADER = "======Printing Orders======\n";
 
+    double totalSalesTax = 0d;
+    double totalPrice = 0d;
+
     public OrderReceipt(Order order) {
         this.order = order;
     }
 
     public String printReceipt() {
+        return ORDER_HEADER +
+                order.getCustomerName() +
+                order.getCustomerAddress() +
+                printLineItems(order.getLineItems()) +
+                "Sales Tax" + '\t' + totalSalesTax +
+                "Total Amount" + '\t' + totalPrice;
+    }
+
+    private String printLineItems(List<LineItem> LineItems) {
         StringBuilder output = new StringBuilder();
 
-        output.append(ORDER_HEADER);
-
-        output.append(order.getCustomerName());
-        output.append(order.getCustomerAddress());
-
-        double totSalesTx = 0d;
-        double tot = 0d;
-        for (LineItem lineItem : order.getLineItems()) {
+        for (LineItem lineItem : LineItems) {
             output.append(lineItem.getDescription());
             output.append('\t');
             output.append(lineItem.getPrice());
@@ -36,14 +43,10 @@ public class OrderReceipt {
             output.append('\n');
 
             double salesTax = lineItem.totalAmount() * .10;
-            totSalesTx += salesTax;
+            totalSalesTax += salesTax;
 
-            tot += lineItem.totalAmount() + salesTax;
+            totalPrice += lineItem.totalAmount() + salesTax;
         }
-
-        output.append("Sales Tax").append('\t').append(totSalesTx);
-
-        output.append("Total Amount").append('\t').append(tot);
         return output.toString();
     }
 }
