@@ -43,7 +43,7 @@ class FibonacciTest {
     }
 
     @Test
-    void should_return_3_when_calculate_given_position_is_50() {
+    void should_return_12586269025L_when_calculate_given_position_is_50() {
         Fibonacci fibonacci = new Fibonacci();
 
         long result = fibonacci.getValueAt(50);

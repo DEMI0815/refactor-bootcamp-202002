@@ -3,11 +3,19 @@ package cc.xpbootcamp.warmup.fibonacci;
 public class Fibonacci {
 
     public long getValueAt(int position) {
-        if (position == 1)
-            return 1;
-        if (position == 2)
-            return 1;
-        return getValueAt(position - 1) + getValueAt(position - 2);
+        long firstNum = 1;
+        long secondNum = 1;
+        long result = 1;
+
+        if (position <= 2)
+            return result;
+
+        for (int i = 3; i <= position; i++) {
+            result = firstNum + secondNum;
+            firstNum = secondNum;
+            secondNum = result;
+        }
+        return result;
     }
 
 }
