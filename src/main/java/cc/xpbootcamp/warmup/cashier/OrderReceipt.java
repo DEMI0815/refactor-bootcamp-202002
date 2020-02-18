@@ -12,7 +12,7 @@ import java.util.List;
 public class OrderReceipt {
     private Order order;
 
-    private static final String ORDER_HEADER = "======Printing Orders======\n";
+    private static final String ORDER_HEADER = "===== 老王超市，值得信赖 ======\n";
     private static final double TAX = .10;
 
     private double totalSalesTax = 0d;
@@ -24,27 +24,44 @@ public class OrderReceipt {
 
     public String printReceipt() {
         return ORDER_HEADER +
-                order.getCustomerName() +
-                order.getCustomerAddress() +
+                printCustomerInfo() +
                 printLineItems(order.getLineItems()) +
-                "Sales Tax" + '\t' + totalSalesTax +
-                "Total Amount" + '\t' + totalPrice;
+                printFooter();
+    }
+
+    private String printCustomerInfo() {
+        String result = "";
+        if (order.getCustomerName() != null)
+            result += order.getCustomerName();
+        if (order.getCustomerAddress() != null)
+            result += order.getCustomerAddress();
+        return result;
     }
 
     private String printLineItems(List<LineItem> LineItems) {
         StringBuilder output = new StringBuilder();
 
         for (LineItem lineItem : LineItems) {
-            output.append(lineItem.getDescription()).append('\t');
-            output.append(lineItem.getPrice()).append('\t');
-            output.append(lineItem.getQuantity()).append('\t');
-            output.append(lineItem.getTotalAmount()).append('\n');
+            output.append(lineItem.getDescription()).append(",\t");
+            output.append(lineItem.getPrice()).append(" x ");
+            output.append(lineItem.getQuantity()).append(",\t");
+            output.append(getTotalAmount(lineItem)).append('\n');
 
-            double salesTax = lineItem.getTotalAmount() * TAX;
+            double salesTax = getTotalAmount(lineItem) * TAX;
             totalSalesTax += salesTax;
 
-            totalPrice += lineItem.getTotalAmount() + salesTax;
+            totalPrice += getTotalAmount(lineItem) + salesTax;
         }
         return output.toString();
+    }
+
+    private double getTotalAmount(LineItem item) {
+        return item.getPrice() * item.getQuantity();
+    }
+
+    private String printFooter() {
+        return "-----------------------------------\n" +
+               "税额:\t" + totalSalesTax + '\n' +
+               "总价:\t" + totalPrice;
     }
 }
