@@ -10,6 +10,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 class OrderReceiptTest {
+    private static final long Tuesday = 1582023725139L;
+    private static final long Wednesday = 1582123472747L;
+
     @Test
     void shouldPrintCustomerInformationOnOrder() {
         Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<LineItem>(), new Date());
@@ -29,7 +32,7 @@ class OrderReceiptTest {
             add(new LineItem("biscuits", 5.0, 5));
             add(new LineItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems, new Date()));
+        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems, new Date(Tuesday)));
 
         String output = receipt.printReceipt();
 
@@ -38,6 +41,25 @@ class OrderReceiptTest {
         assertThat(output, containsString("chocolate,\t20.00 x 1,\t20.00\n"));
         assertThat(output, containsString("税额:\t6.50\n"));
         assertThat(output, containsString("总价:\t71.50"));
+    }
+
+    @Test
+    public void shouldPrintDiscountWhenWednesday() {
+        List<LineItem> lineItems = new ArrayList<LineItem>() {{
+            add(new LineItem("milk", 10.0, 2));
+            add(new LineItem("biscuits", 5.0, 5));
+            add(new LineItem("chocolate", 20.0, 1));
+        }};
+        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems, new Date(Wednesday)));
+
+        String output = receipt.printReceipt();
+
+        assertThat(output, containsString("milk,\t10.00 x 2,\t20.00\n"));
+        assertThat(output, containsString("biscuits,\t5.00 x 5,\t25.00\n"));
+        assertThat(output, containsString("chocolate,\t20.00 x 1,\t20.00\n"));
+        assertThat(output, containsString("税额:\t6.50\n"));
+        assertThat(output, containsString("折扣:\t1.43\n"));
+        assertThat(output, containsString("总价:\t70.07"));
     }
 
 }

@@ -18,6 +18,7 @@ public class OrderReceipt {
     private static final String ORDER_HEADER = "===== 老王超市，值得信赖 ======\n";
     private static final String DATE_FORMAT = "\nyyyy年MM月dd日，EEEE\n\n";
     private static final double TAX = .10;
+    private static final double DISCOUNT = .02;
     private static final String DECIMAL_FORMAT = "%.2f";
 
     private double totalSalesTax = 0d;
@@ -37,8 +38,8 @@ public class OrderReceipt {
 
     private String printDate() {
         Date date = order.getCreatedDate();
-        SimpleDateFormat dateFm = new SimpleDateFormat(DATE_FORMAT, Locale.CHINA);
-        return dateFm.format(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.CHINA);
+        return dateFormat.format(date);
     }
 
     private String printCustomerInfo() {
@@ -71,9 +72,18 @@ public class OrderReceipt {
         return item.getPrice() * item.getQuantity();
     }
 
+    private boolean isWednesday() {
+        Date date = order.getCreatedDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
+        return dateFormat.format(date).equals("星期三");
+    }
+
     private String printFooter() {
+        double discount = (isWednesday() ? totalPrice * DISCOUNT : 0);
+
         return "-----------------------------------\n" +
                "税额:\t" + String.format(DECIMAL_FORMAT, totalSalesTax) + '\n' +
-               "总价:\t" + String.format(DECIMAL_FORMAT, totalPrice);
+               (isWednesday() ? "折扣:\t" + String.format(DECIMAL_FORMAT, discount) + '\n' : "") +
+               "总价:\t" + String.format(DECIMAL_FORMAT, totalPrice - discount);
     }
 }
