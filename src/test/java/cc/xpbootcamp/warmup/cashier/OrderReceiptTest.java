@@ -33,11 +33,11 @@ class OrderReceiptTest {
         String output = receipt.printReceipt();
         System.out.println(output);
 
-        assertThat(output, containsString("milk,\t10.0 x 2,\t20.0\n"));
-        assertThat(output, containsString("biscuits,\t5.0 x 5,\t25.0\n"));
-        assertThat(output, containsString("chocolate,\t20.0 x 1,\t20.0\n"));
-        assertThat(output, containsString("税额:\t6.5\n"));
-        assertThat(output, containsString("总价:\t71.5"));
+        assertThat(output, containsString("milk,\t10.00 x 2,\t20.00\n"));
+        assertThat(output, containsString("biscuits,\t5.00 x 5,\t25.00\n"));
+        assertThat(output, containsString("chocolate,\t20.00 x 1,\t20.00\n"));
+        assertThat(output, containsString("税额:\t6.50\n"));
+        assertThat(output, containsString("总价:\t71.50"));
     }
 
 }

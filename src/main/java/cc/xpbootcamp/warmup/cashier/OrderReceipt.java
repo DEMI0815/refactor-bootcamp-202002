@@ -14,6 +14,7 @@ public class OrderReceipt {
 
     private static final String ORDER_HEADER = "===== 老王超市，值得信赖 ======\n";
     private static final double TAX = .10;
+    private static final String FORMAT = "%.2f";
 
     private double totalSalesTax = 0d;
     private double totalPrice = 0d;
@@ -43,9 +44,9 @@ public class OrderReceipt {
 
         for (LineItem lineItem : LineItems) {
             output.append(lineItem.getDescription()).append(",\t");
-            output.append(lineItem.getPrice()).append(" x ");
+            output.append(String.format(FORMAT, lineItem.getPrice())).append(" x ");
             output.append(lineItem.getQuantity()).append(",\t");
-            output.append(getTotalAmount(lineItem)).append('\n');
+            output.append(String.format(FORMAT, getTotalAmount(lineItem))).append('\n');
 
             double salesTax = getTotalAmount(lineItem) * TAX;
             totalSalesTax += salesTax;
@@ -61,7 +62,7 @@ public class OrderReceipt {
 
     private String printFooter() {
         return "-----------------------------------\n" +
-               "税额:\t" + totalSalesTax + '\n' +
-               "总价:\t" + totalPrice;
+               "税额:\t" + String.format(FORMAT, totalSalesTax) + '\n' +
+               "总价:\t" + String.format(FORMAT, totalPrice);
     }
 }
