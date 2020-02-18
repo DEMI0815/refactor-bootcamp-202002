@@ -3,6 +3,7 @@ package cc.xpbootcamp.warmup.cashier;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,7 +12,7 @@ import static org.hamcrest.Matchers.containsString;
 class OrderReceiptTest {
     @Test
     void shouldPrintCustomerInformationOnOrder() {
-        Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<LineItem>());
+        Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<LineItem>(), new Date());
         OrderReceipt receipt = new OrderReceipt(order);
 
         String output = receipt.printReceipt();
@@ -28,10 +29,9 @@ class OrderReceiptTest {
             add(new LineItem("biscuits", 5.0, 5));
             add(new LineItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems));
+        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems, new Date()));
 
         String output = receipt.printReceipt();
-        System.out.println(output);
 
         assertThat(output, containsString("milk,\t10.00 x 2,\t20.00\n"));
         assertThat(output, containsString("biscuits,\t5.00 x 5,\t25.00\n"));

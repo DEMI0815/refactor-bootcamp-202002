@@ -1,6 +1,9 @@
 package cc.xpbootcamp.warmup.cashier;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * OrderReceipt prints the details of order including customer name, address, description, quantity,
@@ -13,8 +16,9 @@ public class OrderReceipt {
     private Order order;
 
     private static final String ORDER_HEADER = "===== 老王超市，值得信赖 ======\n";
+    private static final String DATE_FORMAT = "\nyyyy年MM月dd日，EEEE\n\n";
     private static final double TAX = .10;
-    private static final String FORMAT = "%.2f";
+    private static final String DECIMAL_FORMAT = "%.2f";
 
     private double totalSalesTax = 0d;
     private double totalPrice = 0d;
@@ -25,9 +29,16 @@ public class OrderReceipt {
 
     public String printReceipt() {
         return ORDER_HEADER +
+                printDate() +
                 printCustomerInfo() +
                 printLineItems(order.getLineItems()) +
                 printFooter();
+    }
+
+    private String printDate() {
+        Date date = order.getCreatedDate();
+        SimpleDateFormat dateFm = new SimpleDateFormat(DATE_FORMAT, Locale.CHINA);
+        return dateFm.format(date);
     }
 
     private String printCustomerInfo() {
@@ -44,9 +55,9 @@ public class OrderReceipt {
 
         for (LineItem lineItem : LineItems) {
             output.append(lineItem.getDescription()).append(",\t");
-            output.append(String.format(FORMAT, lineItem.getPrice())).append(" x ");
+            output.append(String.format(DECIMAL_FORMAT, lineItem.getPrice())).append(" x ");
             output.append(lineItem.getQuantity()).append(",\t");
-            output.append(String.format(FORMAT, getTotalAmount(lineItem))).append('\n');
+            output.append(String.format(DECIMAL_FORMAT, getTotalAmount(lineItem))).append('\n');
 
             double salesTax = getTotalAmount(lineItem) * TAX;
             totalSalesTax += salesTax;
@@ -62,7 +73,7 @@ public class OrderReceipt {
 
     private String printFooter() {
         return "-----------------------------------\n" +
-               "税额:\t" + String.format(FORMAT, totalSalesTax) + '\n' +
-               "总价:\t" + String.format(FORMAT, totalPrice);
+               "税额:\t" + String.format(DECIMAL_FORMAT, totalSalesTax) + '\n' +
+               "总价:\t" + String.format(DECIMAL_FORMAT, totalPrice);
     }
 }
