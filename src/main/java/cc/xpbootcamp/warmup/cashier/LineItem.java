@@ -6,7 +6,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LineItem {
-	private String description;
-	private double price;
-	private int quantity;
+    private String description;
+    private double price;
+    private int quantity;
+
+    public double getTotalAmount() {
+        return price * quantity;
+    }
 }

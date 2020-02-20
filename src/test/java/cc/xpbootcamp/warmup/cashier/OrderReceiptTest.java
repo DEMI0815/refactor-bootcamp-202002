@@ -2,25 +2,24 @@ package cc.xpbootcamp.warmup.cashier;
 
 import org.junit.jupiter.api.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 class OrderReceiptTest {
-    private static final long Tuesday = 1582023725139L;
-    private static final long Wednesday = 1582123472747L;
 
     @Test
-    public void should_print_line_item_and_sales_tax_information() {
+    public void should_print_line_item_and_sales_tax_information() throws ParseException {
         List<LineItem> lineItems = new ArrayList<LineItem>() {{
             add(new LineItem("milk", 10.0, 2));
             add(new LineItem("biscuits", 5.0, 5));
             add(new LineItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems, new Date(Tuesday)));
+        OrderReceipt receipt = new OrderReceipt(new Order(lineItems, new SimpleDateFormat("yyyy-MM-dd").parse("2020-2-17")));
 
         String output = receipt.printReceipt();
 
@@ -32,15 +31,16 @@ class OrderReceiptTest {
     }
 
     @Test
-    public void should_print_discount_when_Wednesday() {
+    public void should_print_discount_when_Wednesday() throws ParseException {
         List<LineItem> lineItems = new ArrayList<LineItem>() {{
             add(new LineItem("milk", 10.0, 2));
             add(new LineItem("biscuits", 5.0, 5));
             add(new LineItem("chocolate", 20.0, 1));
         }};
-        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems, new Date(Wednesday)));
+        OrderReceipt receipt = new OrderReceipt(new Order(lineItems, new SimpleDateFormat("yyyy-MM-dd").parse("2020-2-19")));
 
         String output = receipt.printReceipt();
+        System.out.println(output);
 
         assertThat(output, containsString("milk,\t10.00 x 2,\t20.00\n"));
         assertThat(output, containsString("biscuits,\t5.00 x 5,\t25.00\n"));

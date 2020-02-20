@@ -2,7 +2,6 @@ package cc.xpbootcamp.warmup.cashier;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import static cc.xpbootcamp.warmup.cashier.Constants.*;
@@ -12,13 +11,9 @@ import static cc.xpbootcamp.warmup.cashier.Constants.*;
  * price and amount. It also calculates the sales tax @ 10% and prints as part
  * of order. It computes the total order amount (amount of individual lineItems +
  * total sales tax) and prints it.
- *
  */
 public class OrderReceipt {
     private Order order;
-
-    private double totalSalesTax = 0d;
-    private double totalPrice = 0d;
 
     public OrderReceipt(Order order) {
         this.order = order;
@@ -28,9 +23,8 @@ public class OrderReceipt {
         StringBuilder output = new StringBuilder();
 
         output.append(printHeader())
-                .append(printLineItems(order.getLineItems()))
+                .append(printLineItems())
                 .append(printFooter());
-
         return output.toString();
     }
 
@@ -44,25 +38,12 @@ public class OrderReceipt {
         return dateFormat.format(date);
     }
 
-    private String printLineItems(List<LineItem> LineItems) {
+    private String printLineItems() {
         StringBuilder output = new StringBuilder();
+        order.getLineItems().forEach(item -> output.append(String.format("%s,\t%.2f x %d,\t%.2f\n",
+                item.getDescription(), item.getPrice(), item.getQuantity(), item.getTotalAmount())));
 
-        for (LineItem lineItem : LineItems) {
-            output.append(lineItem.getDescription()).append(",\t");
-            output.append(String.format(DECIMAL_FORMAT, lineItem.getPrice())).append(" x ");
-            output.append(lineItem.getQuantity()).append(",\t");
-            output.append(String.format(DECIMAL_FORMAT, getTotalAmount(lineItem))).append('\n');
-
-            double salesTax = getTotalAmount(lineItem) * TAX;
-            totalSalesTax += salesTax;
-
-            totalPrice += getTotalAmount(lineItem) + salesTax;
-        }
         return output.toString();
-    }
-
-    private double getTotalAmount(LineItem item) {
-        return item.getPrice() * item.getQuantity();
     }
 
     private boolean isWednesday() {
@@ -71,14 +52,18 @@ public class OrderReceipt {
         return dateFormat.format(date).equals(WEDNESDAY);
     }
 
+    private String formatPriceInformation(String title, double price) {
+        return String.format("%s:\t%.2f\n", title, price);
+    }
+
     private String printFooter() {
         StringBuilder output = new StringBuilder();
-        double discount = (isWednesday() ? totalPrice * DISCOUNT : 0);
+        double discount = (isWednesday() ? order.getDiscount() : 0);
 
-        output.append("-----------------------------------\n").
-                append("税额:\t").append(String.format(DECIMAL_FORMAT, totalSalesTax)).append('\n')
-                .append((isWednesday() ? "折扣:\t" + String.format(DECIMAL_FORMAT, discount) + '\n' : ""))
-                .append("总价:\t").append(String.format(DECIMAL_FORMAT, totalPrice - discount));
+        output.append(DIVIDER)
+                .append(formatPriceInformation("税额", order.getTotalSalesTax()))
+                .append(isWednesday() ? formatPriceInformation("折扣", discount) : "")
+                .append(formatPriceInformation("总价", order.getTotalPrice() - discount));
 
         return output.toString();
     }
