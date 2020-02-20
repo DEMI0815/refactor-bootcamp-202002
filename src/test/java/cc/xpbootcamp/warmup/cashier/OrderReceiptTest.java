@@ -14,19 +14,7 @@ class OrderReceiptTest {
     private static final long Wednesday = 1582123472747L;
 
     @Test
-    void shouldPrintCustomerInformationOnOrder() {
-        Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<LineItem>(), new Date());
-        OrderReceipt receipt = new OrderReceipt(order);
-
-        String output = receipt.printReceipt();
-
-
-        assertThat(output, containsString("Mr X"));
-        assertThat(output, containsString("Chicago, 60601"));
-    }
-
-    @Test
-    public void shouldPrintLineItemAndSalesTaxInformation() {
+    public void should_print_line_item_and_sales_tax_information() {
         List<LineItem> lineItems = new ArrayList<LineItem>() {{
             add(new LineItem("milk", 10.0, 2));
             add(new LineItem("biscuits", 5.0, 5));
@@ -44,7 +32,7 @@ class OrderReceiptTest {
     }
 
     @Test
-    public void shouldPrintDiscountWhenWednesday() {
+    public void should_print_discount_when_Wednesday() {
         List<LineItem> lineItems = new ArrayList<LineItem>() {{
             add(new LineItem("milk", 10.0, 2));
             add(new LineItem("biscuits", 5.0, 5));

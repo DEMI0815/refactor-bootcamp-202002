@@ -25,26 +25,23 @@ public class OrderReceipt {
     }
 
     public String printReceipt() {
-        return ORDER_HEADER +
-                printDate() +
-                printCustomerInfo() +
-                printLineItems(order.getLineItems()) +
-                printFooter();
+        StringBuilder output = new StringBuilder();
+
+        output.append(printHeader())
+                .append(printLineItems(order.getLineItems()))
+                .append(printFooter());
+
+        return output.toString();
+    }
+
+    private String printHeader() {
+        return ORDER_HEADER + printDate();
     }
 
     private String printDate() {
         Date date = order.getCreatedDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.CHINA);
         return dateFormat.format(date);
-    }
-
-    private String printCustomerInfo() {
-        String result = "";
-        if (order.getCustomerName() != null)
-            result += order.getCustomerName();
-        if (order.getCustomerAddress() != null)
-            result += order.getCustomerAddress();
-        return result;
     }
 
     private String printLineItems(List<LineItem> LineItems) {
@@ -75,11 +72,14 @@ public class OrderReceipt {
     }
 
     private String printFooter() {
+        StringBuilder output = new StringBuilder();
         double discount = (isWednesday() ? totalPrice * DISCOUNT : 0);
 
-        return "-----------------------------------\n" +
-               "税额:\t" + String.format(DECIMAL_FORMAT, totalSalesTax) + '\n' +
-               (isWednesday() ? "折扣:\t" + String.format(DECIMAL_FORMAT, discount) + '\n' : "") +
-               "总价:\t" + String.format(DECIMAL_FORMAT, totalPrice - discount);
+        output.append("-----------------------------------\n").
+                append("税额:\t").append(String.format(DECIMAL_FORMAT, totalSalesTax)).append('\n')
+                .append((isWednesday() ? "折扣:\t" + String.format(DECIMAL_FORMAT, discount) + '\n' : ""))
+                .append("总价:\t").append(String.format(DECIMAL_FORMAT, totalPrice - discount));
+
+        return output.toString();
     }
 }
