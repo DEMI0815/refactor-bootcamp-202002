@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static cc.xpbootcamp.warmup.cashier.Constants.*;
+
 /**
  * OrderReceipt prints the details of order including customer name, address, description, quantity,
  * price and amount. It also calculates the sales tax @ 10% and prints as part
@@ -14,12 +16,6 @@ import java.util.Locale;
  */
 public class OrderReceipt {
     private Order order;
-
-    private static final String ORDER_HEADER = "===== 老王超市，值得信赖 ======\n";
-    private static final String DATE_FORMAT = "\nyyyy年MM月dd日，EEEE\n\n";
-    private static final double TAX = .10;
-    private static final double DISCOUNT = .02;
-    private static final String DECIMAL_FORMAT = "%.2f";
 
     private double totalSalesTax = 0d;
     private double totalPrice = 0d;
@@ -75,7 +71,7 @@ public class OrderReceipt {
     private boolean isWednesday() {
         Date date = order.getCreatedDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
-        return dateFormat.format(date).equals("星期三");
+        return dateFormat.format(date).equals(WEDNESDAY);
     }
 
     private String printFooter() {
