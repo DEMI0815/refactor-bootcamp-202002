@@ -1,7 +1,9 @@
 package cc.xpbootcamp.warmup.cashier;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +30,11 @@ public class Order {
 
     public double getDiscount() {
         return getTotalPrice() * DISCOUNT;
+    }
+
+    public String getCreatedDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.CHINA);
+        return dateFormat.format(createdDate);
     }
 
 }

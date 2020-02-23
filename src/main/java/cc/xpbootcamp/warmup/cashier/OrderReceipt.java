@@ -1,9 +1,5 @@
 package cc.xpbootcamp.warmup.cashier;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import static cc.xpbootcamp.warmup.cashier.Constants.*;
 
 /**
@@ -20,22 +16,13 @@ public class OrderReceipt {
     }
 
     public String printReceipt() {
-        StringBuilder output = new StringBuilder();
-
-        output.append(printHeader())
-                .append(printLineItems())
-                .append(printFooter());
-        return output.toString();
+        return printHeader() +
+                printLineItems() +
+                printFooter();
     }
 
     private String printHeader() {
-        return ORDER_HEADER + printDate();
-    }
-
-    private String printDate() {
-        Date date = order.getCreatedDate();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.CHINA);
-        return dateFormat.format(date);
+        return ORDER_HEADER + order.getCreatedDate();
     }
 
     private String printLineItems() {
@@ -47,9 +34,8 @@ public class OrderReceipt {
     }
 
     private boolean isWednesday() {
-        Date date = order.getCreatedDate();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.CHINA);
-        return dateFormat.format(date).equals(WEDNESDAY);
+        String week = order.getCreatedDate().split("，")[1];
+        return week.contains(WEDNESDAY);
     }
 
     private String formatPriceInformation(String title, double price) {
